@@ -54,6 +54,31 @@ func register(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// 登入
+func login(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("method:", r.Method) //get request method
+	if r.Method == "GET" {
+		t, _ := template.ParseFiles("login.html")
+		t.Execute(w, nil)
+	} else {
+		r.ParseForm()
+		// logic part of log in
+		fmt.Println("username:", r.Form["username"])
+		fmt.Println("password:", r.Form["password"])
+		name := r.FormValue("username")
+		password := r.FormValue("password")
+		fmt.Fprintf(w, "name = %s\n", name)
+		fmt.Fprintf(w, "password = %s\n", password)
+		//檢查密碼是否正確
+		if databasecheck(name, password) == 0 {
+			fmt.Fprintln(w, "請輸入正確帳號密碼")
+		} else {
+			fmt.Fprintln(w, "登入成功")
+		}
+
+	}
+}
+
 //檢查帳號是否已存在
 func CheckCountexist(Registername string) int {
 	exist := 0 //判斷帳號是否已存在  0 不存在 1存在
@@ -94,31 +119,6 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("val:", strings.Join(v, ""))
 	}
 	fmt.Fprintf(w, "Hello astaxie!") // write data to response
-}
-
-// 登入
-func login(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("method:", r.Method) //get request method
-	if r.Method == "GET" {
-		t, _ := template.ParseFiles("login.html")
-		t.Execute(w, nil)
-	} else {
-		r.ParseForm()
-		// logic part of log in
-		fmt.Println("username:", r.Form["username"])
-		fmt.Println("password:", r.Form["password"])
-		name := r.FormValue("username")
-		password := r.FormValue("password")
-		fmt.Fprintf(w, "name = %s\n", name)
-		fmt.Fprintf(w, "password = %s\n", password)
-		//檢查密碼是否正確
-		if databasecheck(name, password) == 0 {
-			fmt.Fprintln(w, "請輸入正確帳號密碼")
-		} else {
-			fmt.Fprintln(w, "登入成功")
-		}
-
-	}
 }
 
 //檢查密碼是否正確
