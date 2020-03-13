@@ -5,11 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>登入頁面</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1> 登入</h1>
     <div class="container">
         <svg class="container__logo" t="1581484495175" class="icon" viewBox="0 0 1024 1024" version="1.1"
             xmlns="http://www.w3.org/2000/svg" p-id="799" width="200" height="200">
@@ -24,14 +23,13 @@
             </path>
         </svg>
         <form method="POST" action="/login" class="form">
-            <label for="username">帳號:</label>
+            <label for="username"class="CP">帳號:</label>
             <input id="username" class="form--input" type="text" name="username" placeholder="請輸入帳號">
-            <label for="password">密碼:</label>
+            <label for="password"class="CP">密碼:</label>
             <input id="password" class="form--input" type="password" name="password" placeholder="請輸入密碼">
             <input type="submit" class="form--btn" value="登入" data-action="submit/">
-          <a href="register.html">註冊</a>
+          <a href="register.html" class="form--btn">註冊</a>
         </form>
     </div>
 </body>
-
 </html>

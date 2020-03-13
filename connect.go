@@ -16,6 +16,7 @@ import (
 	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/httprouter-master"
 )
 
 func main() {
@@ -23,13 +24,23 @@ func main() {
 }
 
 func GetWebData() {
-	http.HandleFunc("/", sayhelloName)       // setting router rule
+	http.HandleFunc("/", sayhelloName) // setting router rule
+
 	http.HandleFunc("/login", login)         //登入頁面
 	http.HandleFunc("/register", register)   //註冊頁面
 	err := http.ListenAndServe(":9090", nil) // setting listening port
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
+}
+
+func index(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	t, err := template.ParseFiles("views/index.html")
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+	}
+
+	t.Execute(w, "My Application with CSS")
 }
 
 //註冊
@@ -118,7 +129,11 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("key:", k)
 		fmt.Println("val:", strings.Join(v, ""))
 	}
-	fmt.Fprintf(w, "Hello astaxie!") // write data to response
+	// fmt.Fprintf(w, "Hello astaxie!") // write data to response
+	if r.Method == "GET" {
+		t, _ := template.ParseFiles("register.html")
+		t.Execute(w, nil)
+	}
 }
 
 //檢查密碼是否正確

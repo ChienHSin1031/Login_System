@@ -6,10 +6,18 @@ body {
     justify-content: center;
     align-items: center;
     background-color: #434343;
-  }
+  } 
+
+  .CP{
+   background-color: transparent; 
+    border: 0;
+    color: #ffffff;
+    
+  } 
+  
   .container {
-    width: 300px;
-    height: 330px;
+    width: 350px;
+    height: 400px;
     background-color: #000000;
     border-radius: 5px;
     display: flex;
@@ -17,13 +25,13 @@ body {
     align-items: center;
   }
   .container__logo {
-    height: 70px;
-    width: 70px;
+    height: 100px;
+    width: 100px;
     margin: 40px auto;
   }
   .form {
     display: flex;
-    height: 300px;
+    height: 400px;
     width: 100%;
     flex-direction: column;
     justify-content: flex-end;
@@ -39,6 +47,9 @@ body {
     color: white;
     height: 30px;
   }
+  #register{
+   font-size: 20px; 
+  }
 
   .form--btn {
     background-color: transparent;
@@ -46,6 +57,9 @@ body {
     color: #c2c3c4;
     height: 50px;
     width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
   }
 
   .form--btn:hover{
