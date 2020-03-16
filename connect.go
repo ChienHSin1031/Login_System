@@ -13,6 +13,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"regexp"
 	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -56,10 +57,20 @@ func register(w http.ResponseWriter, r *http.Request) {
 		Registerpassword := r.FormValue("Registerpassword")
 		Checkpassword := r.FormValue("Checkpassword")
 
-		// CheckCountexist(Registername)    檢查帳號是否已註冊 exist 0 未註冊過 : 1 註冊過
-		if CheckCountexist(Registername) == 0 && Registerpassword == Checkpassword { //如果帳號沒註冊過及密碼輸入2次都相同
-			databaseWrite(Registername, Registerpassword) //寫入資料庫
-			fmt.Fprintln(w, "註冊成功")
+		//利用正則表示法限定輸入字符
+		matchuser, _ := regexp.MatchString("[a-z0-9]{6,}", Registername)
+		matchpassword, _ := regexp.MatchString("[a-z0-9]{6,}", Registerpassword)
+		matchCheckpassword, _ := regexp.MatchString("[a-z0-9]{6,}", Checkpassword)
+		if matchuser == true && matchpassword == true && matchCheckpassword == true {
+
+			// CheckCountexist(Registername)    檢查帳號是否已註冊 exist 0 未註冊過 : 1 註冊過
+			if CheckCountexist(Registername) == 0 && Registerpassword == Checkpassword { //如果帳號沒註冊過及密碼輸入2次都相同
+				databaseWrite(Registername, Registerpassword) //寫入資料庫
+				fmt.Fprintln(w, "註冊成功")
+			}
+		} else {
+			fmt.Println("請輸入6位英數以上")
+			fmt.Fprintln(w, "請輸入6位英數以上")
 		}
 
 	}
@@ -80,11 +91,20 @@ func login(w http.ResponseWriter, r *http.Request) {
 		password := r.FormValue("password")
 		fmt.Fprintf(w, "name = %s\n", name)
 		fmt.Fprintf(w, "password = %s\n", password)
-		//檢查密碼是否正確
-		if databasecheck(name, password) == 0 {
-			fmt.Fprintln(w, "請輸入正確帳號密碼")
+
+		//利用正則表示法限定輸入字符
+		matchuser, _ := regexp.MatchString("[a-z0-9]{6,}", name)
+		matchpassword, _ := regexp.MatchString("[a-z0-9]{6,}", password)
+		if matchpassword == true && matchuser == true {
+			//檢查密碼是否正確
+			if databasecheck(name, password) == 0 {
+				fmt.Fprintln(w, "請輸入正確帳號密碼")
+			} else {
+				fmt.Fprintln(w, "登入成功")
+			}
 		} else {
-			fmt.Fprintln(w, "登入成功")
+			fmt.Println("請輸入6位英數以上")
+			fmt.Fprintln(w, "請輸入6位英數以上")
 		}
 
 	}
