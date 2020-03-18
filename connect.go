@@ -25,10 +25,12 @@ func main() {
 }
 
 func GetWebData() {
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	http.HandleFunc("/", sayhelloName) // setting router rule
 
-	http.HandleFunc("/login", login)         //登入頁面
-	http.HandleFunc("/register", register)   //註冊頁面
+	http.HandleFunc("/login", login)       //登入頁面
+	http.HandleFunc("/register", register) //註冊頁面
+
 	err := http.ListenAndServe(":9090", nil) // setting listening port
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
